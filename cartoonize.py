@@ -22,7 +22,7 @@ def resize_crop(image):
     return image
     
 
-def cartoon(load_folder, save_folder, model_path='test_code/saved_models'):
+def cartoon( model_path,image_obj):
     input_photo = tf.placeholder(tf.float32, [1, None, None, 3])
     network_out = network.unet_generator(input_photo)
     final_out = guided_filter.guided_filter(input_photo, network_out, r=1, eps=5e-3)
@@ -39,18 +39,18 @@ def cartoon(load_folder, save_folder, model_path='test_code/saved_models'):
     saver.restore(sess, tf.train.latest_checkpoint(model_path))
     
     try:
-        load_path = os.path.join(load_folder, name)
-        save_path = os.path.join(save_folder, name)
-        image = cv2.imread(load_path)
+        image = cv2.cvtColor(np.array(image_obj), cv2.COLOR_RGB2BGR)
         image = resize_crop(image)
         batch_image = image.astype(np.float32)/127.5 - 1
         batch_image = np.expand_dims(batch_image, axis=0)
         output = sess.run(final_out, feed_dict={input_photo: batch_image})
         output = (np.squeeze(output)+1)*127.5
         output = np.clip(output, 0, 255).astype(np.uint8)
-        cv2.imwrite(save_path, output)
+
+        return output
+        #cv2.imwrite(save_path, output)
     except:
-        print('cartoonize {} failed'.format(load_path))
+        print('cartoonize failed')
 
 
     
