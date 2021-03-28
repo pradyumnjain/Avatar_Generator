@@ -21,9 +21,9 @@ def get_image_download_link(img):
 	out: href string
 	"""
 	buffered = BytesIO()
-	img.save(buffered, format="png")
+	img.save(buffered, format="JPEG")
 	img_str = base64.b64encode(buffered.getvalue()).decode()
-	href = f'<a href="data:file/png;base64,{img_str}">Download</a>'
+	href = f'<a href="data:file/jpg;base64,{img_str}">Download result</a>'
 	return href
 
 # background
@@ -92,7 +92,7 @@ if uploaded_file is not None:
         bg_image = run_visualization(image, MODEL)
     st.success('Done!')
     st.image(bg_image, caption='background removed image.', use_column_width=True)
-    st.markdown(get_image_download_link(bg_image), unsafe_allow_html=True)
+    # st.markdown(get_image_download_link(bg_image), unsafe_allow_html=True)
 
     # st.balloons()
     # cartoon creation
