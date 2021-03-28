@@ -13,7 +13,7 @@ import guided_filter
 import base64
 from seg import DeepLabModel
 from seg import run_visualization
-import cv2
+
 
 # download function
 def get_image_download_link_cartoon(img):
@@ -121,7 +121,7 @@ if uploaded_file is not None:
     col2.write("")
     with st.spinner('Cartooning Image ...'):
         final_img= cartoon(model_path,bg_image)
-        final_img = cv2.cvtColor(final_img, cv2.COLOR_BGR2RGB)
+        
     col2.image(final_img, caption='cartoonified image.', use_column_width=True)
     # download image
     col2.markdown(get_image_download_link_cartoon(Image.fromarray(final_img)), unsafe_allow_html=True)
