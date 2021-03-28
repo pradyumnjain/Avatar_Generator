@@ -16,7 +16,7 @@ from seg import run_visualization
 import cv2
 
 # download function
-def get_image_download_link(img):
+def get_image_download_link_cartoon(img):
 	"""Generates a link allowing the PIL image to be downloaded
 	in:  PIL image
 	out: href string
@@ -24,7 +24,18 @@ def get_image_download_link(img):
 	buffered = BytesIO()
 	img.save(buffered, format="JPEG")
 	img_str = base64.b64encode(buffered.getvalue()).decode()
-	href = f'<a href="data:file/jpg;base64,{img_str}">Download result</a>'
+	href = f'<a href="data:file/jpg;base64,{img_str}" download="cartoon.jpg">Download result</a>'
+	return href
+
+def get_image_download_link_bg(img):
+	"""Generates a link allowing the PIL image to be downloaded
+	in:  PIL image
+	out: href string
+	"""
+	buffered = BytesIO()
+	img.save(buffered, format="JPEG")
+	img_str = base64.b64encode(buffered.getvalue()).decode()
+	href = f'<a href="data:file/jpg;base64,{img_str}" download="foreground.jpg">Download result</a>'
 	return href
 
 # background
@@ -94,7 +105,7 @@ if uploaded_file is not None:
     st.success('Done!')
     st.image(bg_image, caption='background removed image.', use_column_width=True)
     # download image
-    # st.markdown(get_image_download_link(bg_image), unsafe_allow_html=True)
+    st.markdown(get_image_download_link_bg(bg_image), unsafe_allow_html=True)
 
     # cartoon creation
     model_path = 'test_code/saved_models'
@@ -104,7 +115,7 @@ if uploaded_file is not None:
         final_img = cv2.cvtColor(final_img, cv2.COLOR_BGR2RGB)
     st.image(final_img, caption='cartoonified image.', use_column_width=True)
     # download image
-    st.markdown(get_image_download_link(Image.fromarray(final_img)), unsafe_allow_html=True)
+    st.markdown(get_image_download_link_cartoon(Image.fromarray(final_img)), unsafe_allow_html=True)
     st.balloons()
 
     
