@@ -68,15 +68,18 @@ if uploaded_file is not None:
     st.markdown("<h1 style='text-align: center; color: white;'>Original Image</h1>", unsafe_allow_html=True)
     st.image(image, caption='Uploaded Image.', use_column_width=True)
     st.write("")
-    st.markdown("<h1 style='text-align: center; color:#710193;'>processing...</h1>", unsafe_allow_html=True)
+    # st.markdown("<h1 style='text-align: center; color:#710193;'>processing...</h1>", unsafe_allow_html=True)
 
     # background removal
     modelType = "xception_model"
     MODEL = DeepLabModel(modelType)
-    bg_image = run_visualization(image, MODEL)
     st.markdown("<h1 style='text-align: center; color: white;'>Background Removal</h1>", unsafe_allow_html=True)
+    with st.spinner('Removing background ...'):
+        bg_image = run_visualization(image, MODEL)
+    st.success('Done!')
     st.image(bg_image, caption='background removed image.', use_column_width=True)
 
+    # st.balloons()
     # cartoon creation
     # cartoon(load_folder, save_folder, model_path,name)
 
