@@ -4,6 +4,13 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 from PIL import Image
+import sys
+import os
+from cartoonize import cartoon
+import network 
+import guided_filter 
+from seg import DeepLabModel
+from seg import run_visualization
 
 # background
 st.markdown(
@@ -62,6 +69,16 @@ if uploaded_file is not None:
     st.image(image, caption='Uploaded Image.', use_column_width=True)
     st.write("")
     st.markdown("<h1 style='text-align: center; color:#710193;'>processing...</h1>", unsafe_allow_html=True)
+
+    # background removal
+    modelType = "xception_model"
+    MODEL = DeepLabModel(modelType)
+    bg_image = run_visualization(image, MODEL)
+    st.markdown("<h1 style='text-align: center; color: white;'>Background Removal</h1>", unsafe_allow_html=True)
+    st.image(bg_image, caption='background removed image.', use_column_width=True)
+
+    # cartoon creation
+    # cartoon(load_folder, save_folder, model_path,name)
 
 
     

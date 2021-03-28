@@ -60,7 +60,7 @@ class DeepLabModel(object):
 
     return resized_image, seg_map
 
-def drawSegment(baseImg, matImg, outputFilePath):
+def drawSegment(baseImg, matImg):
   width, height = baseImg.size
   dummyImg = np.zeros([height, width, 4], dtype=np.uint8)
   for x in range(width):
@@ -74,29 +74,26 @@ def drawSegment(baseImg, matImg, outputFilePath):
   img = Image.fromarray(dummyImg)
   image = Image.new("RGB", img.size, "WHITE")
   image.paste(img, (0, 0), img) 
-  image.save(outputFilePath)
+  return image
   
   
   
 
 
 
-def run_visualization(infilepath, outfilepath, MODEL):
+def run_visualization(image,MODEL):
   """Inferences DeepLab model and visualizes result."""
   try:
-  	print("Trying to open : " + sys.argv[1])
-  	# f = open(sys.argv[1])
-  	jpeg_str = open(infilepath, "rb").read()
-  	orignal_im = Image.open(BytesIO(jpeg_str))
+  	orignal_im = image
   except IOError:
-    print('Cannot retrieve image. Please check file: ' + infilepath)
+    print('Cannot retrieve image. Please check file: ')
     return
 
-  print('running deeplab on image %s...' % infilepath)
+  print('running deeplab on image')
   resized_im, seg_map = MODEL.run(orignal_im)
 
   # vis_segmentation(resized_im, seg_map)
-  drawSegment(resized_im, seg_map, outfilepath)
+  return drawSegment(resized_im, seg_map)
 
 
 

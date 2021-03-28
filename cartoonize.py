@@ -22,7 +22,7 @@ def resize_crop(image):
     return image
     
 
-def cartoon(load_folder, save_folder, model_path,name):
+def cartoon(load_folder, save_folder, model_path='test_code/saved_models'):
     input_photo = tf.placeholder(tf.float32, [1, None, None, 3])
     network_out = network.unet_generator(input_photo)
     final_out = guided_filter.guided_filter(input_photo, network_out, r=1, eps=5e-3)
