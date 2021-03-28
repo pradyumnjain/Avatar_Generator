@@ -118,6 +118,10 @@ if uploaded_file is not None:
     st.markdown(get_image_download_link_cartoon(Image.fromarray(final_img)), unsafe_allow_html=True)
     st.balloons()
 
+
+    if __name__ == '__main__':
+        pass
+
     
 
 
