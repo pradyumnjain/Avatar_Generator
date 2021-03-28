@@ -3,6 +3,7 @@ import streamlit as st
 # working with sample data.
 import numpy as np
 import pandas as pd
+from PIL import Image
 
 # background
 st.markdown(
@@ -50,7 +51,19 @@ st.markdown("""
 
 st.markdown('<p class="big-title">Pixel</p>', unsafe_allow_html=True)
 st.markdown('<p class="big-font">One click to transform yourself in a cartoon.</p>', unsafe_allow_html=True)
-st.markdown('<p class="small-font">Upload a photo to transform : </p>',unsafe_allow_html=True )
+
+### Excluding Imports ###
+st.title("Upload a photo to transform :-) ")
+
+uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+if uploaded_file is not None:
+    image = Image.open(uploaded_file)
+    st.image(image, caption='Uploaded Image.', use_column_width=True)
+    st.write("")
+    st.write("Converting...")
+    
+
+
 
 
 
