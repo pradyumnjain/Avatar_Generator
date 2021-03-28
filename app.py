@@ -13,6 +13,7 @@ import guided_filter
 import base64
 from seg import DeepLabModel
 from seg import run_visualization
+import cv2
 
 # download function
 def get_image_download_link(img):
@@ -96,8 +97,10 @@ if uploaded_file is not None:
 
     # st.balloons()
     # cartoon creation
-    # cartoon(load_folder, save_folder, model_path,name)
-
+    model_path = 'test_code/saved_models'
+    final_img= cartoon(model_path,bg_image)
+    final_img = cv2.cvtColor(final_img, cv2.COLOR_BGR2RGB)
+    st.image(final_img, caption='cartoonified image.', use_column_width=True)
 
     
 
