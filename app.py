@@ -45,8 +45,8 @@ st.markdown(
     .reportview-container {
         background-color: #df73ff
     }
-   .sidebar .sidebar-content {
-        background-color: #00FFFF
+    .sidebar .sidebar-content {
+         background-color: #FFDF73
     }
     </style>
     """,
@@ -85,37 +85,46 @@ st.markdown("""
 st.markdown('<p class="big-title">Pixel</p>', unsafe_allow_html=True)
 st.markdown('<p class="big-font">One click to transform yourself in a cartoon.</p>', unsafe_allow_html=True)
 
-### Excluding Imports ###
-st.title("Upload a photo to transform :-) ")
+###side bar
+st.sidebar.title('Upload')
+st.sidebar.header("Upload a photo to transform :-) ")
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg","jpeg","png"])
+### Excluding Imports ###
+#st.title("Upload a photo to transform :-) ")
+
+col1, col2 = st.beta_columns(2)
+
+uploaded_file = st.sidebar.file_uploader("Choose an image...", type=["jpg","jpeg","png"])
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    st.markdown("<h1 style='text-align: center; color: white;'>Original Image</h1>", unsafe_allow_html=True)
-    st.image(image, caption='Uploaded Image.', use_column_width=True)
+    st.sidebar.markdown("<h1 style='text-align: center; color: white;'>Original Image</h1>", unsafe_allow_html=True)
+    st.sidebar.image(image,width=300, caption='Uploaded Image.', use_column_width=True)
     st.write("")
     # st.markdown("<h1 style='text-align: center; color:#710193;'>processing...</h1>", unsafe_allow_html=True)
 
     # background removal
     modelType = "xception_model"
     MODEL = DeepLabModel(modelType)
-    st.markdown("<h1 style='text-align: center; color: white;'>Background Removal</h1>", unsafe_allow_html=True)
+    col1.markdown("<h1 style='text-align: center; color: white;'>Background Removal</h1>", unsafe_allow_html=True)
     with st.spinner('Removing background ...'):
         bg_image = run_visualization(image, MODEL)
     st.success('Done!')
-    st.image(bg_image, caption='background removed image.', use_column_width=True)
+    col1.image(bg_image, caption='background removed image.', use_column_width=True)
     # download image
-    st.markdown(get_image_download_link_bg(bg_image), unsafe_allow_html=True)
+    col1.markdown(get_image_download_link_bg(bg_image), unsafe_allow_html=True)
 
     # cartoon creation
     model_path = 'test_code/saved_models'
-    st.markdown("<h1 style='text-align: center; color: white;'>Image Cartooning</h1>", unsafe_allow_html=True)
+    col2.markdown("<h1 style='text-align: center; color: white;'>Image Cartooning</h1>", unsafe_allow_html=True)
+    col2.write("")
+    col2.write("")
+    col2.write("")
     with st.spinner('Cartooning Image ...'):
         final_img= cartoon(model_path,bg_image)
         final_img = cv2.cvtColor(final_img, cv2.COLOR_BGR2RGB)
-    st.image(final_img, caption='cartoonified image.', use_column_width=True)
+    col2.image(final_img, caption='cartoonified image.', use_column_width=True)
     # download image
-    st.markdown(get_image_download_link_cartoon(Image.fromarray(final_img)), unsafe_allow_html=True)
+    col2.markdown(get_image_download_link_cartoon(Image.fromarray(final_img)), unsafe_allow_html=True)
     st.balloons()
 
     
