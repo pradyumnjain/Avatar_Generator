@@ -55,12 +55,15 @@ st.markdown('<p class="big-font">One click to transform yourself in a cartoon.</
 ### Excluding Imports ###
 st.title("Upload a photo to transform :-) ")
 
-uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg","jpeg","png"])
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
+    st.markdown("<h1 style='text-align: center; color: white;'>Original Image</h1>", unsafe_allow_html=True)
     st.image(image, caption='Uploaded Image.', use_column_width=True)
     st.write("")
-    st.write("Converting...")
+    st.markdown("<h1 style='text-align: center; color:#710193;'>processing...</h1>", unsafe_allow_html=True)
+
+
     
 
 
