@@ -6,11 +6,25 @@ import pandas as pd
 from PIL import Image
 import sys
 import os
+from io import BytesIO
 from cartoonize import cartoon
 import network 
 import guided_filter 
+import base64
 from seg import DeepLabModel
 from seg import run_visualization
+
+# download function
+def get_image_download_link(img):
+	"""Generates a link allowing the PIL image to be downloaded
+	in:  PIL image
+	out: href string
+	"""
+	buffered = BytesIO()
+	img.save(buffered, format="png")
+	img_str = base64.b64encode(buffered.getvalue()).decode()
+	href = f'<a href="data:file/png;base64,{img_str}">Download</a>'
+	return href
 
 # background
 st.markdown(
@@ -78,6 +92,7 @@ if uploaded_file is not None:
         bg_image = run_visualization(image, MODEL)
     st.success('Done!')
     st.image(bg_image, caption='background removed image.', use_column_width=True)
+    st.markdown(get_image_download_link(bg_image), unsafe_allow_html=True)
 
     # st.balloons()
     # cartoon creation
