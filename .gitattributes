@@ -1,0 +1,4 @@
+*.pb filter=lfs diff=lfs merge=lfs -text
+xception_model/ filter=lfs diff=lfs merge=lfs -text
+xception_model/frozen_inference_graph.pb filter=lfs diff=lfs merge=lfs -text
+xception_model/model.ckpt.data-00000-of-00001 filter=lfs diff=lfs merge=lfs -text
