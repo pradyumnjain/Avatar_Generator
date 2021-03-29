@@ -7,6 +7,7 @@ from PIL import Image
 import sys
 import os
 from io import BytesIO
+import tensorflow as tf 
 from cartoonize import cartoon
 import network 
 import guided_filter 
