@@ -65,23 +65,3 @@ def fast_guided_filter(lr_x, lr_y, hr_x, r=1, eps=1e-8):
     return output
 
 
-if __name__ == '__main__':
-    import cv2
-    from tqdm import tqdm
-
-    input_photo = tf.placeholder(tf.float32, [1, None, None, 3])
-    #input_superpixel = tf.placeholder(tf.float32, [16, 256, 256, 3])
-    output = guided_filter(input_photo, input_photo, 5, eps=1)
-    image = cv2.imread('output_figure1/cartoon2.jpg')
-    image = image/127.5 - 1
-    image = np.expand_dims(image, axis=0)
-
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
-    sess = tf.Session(config=config)
-    sess.run(tf.global_variables_initializer())
-
-    out = sess.run(output, feed_dict={input_photo: image})
-    out = (np.squeeze(out)+1)*127.5
-    out = np.clip(out, 0, 255).astype(np.uint8)
-    cv2.imwrite('output_figure1/cartoon2_filter.jpg', out)

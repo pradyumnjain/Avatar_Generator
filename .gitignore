@@ -128,4 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# keys
+*.pem
+
+# folder
 xception_model

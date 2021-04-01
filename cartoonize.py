@@ -1,10 +1,10 @@
 import os
-import cv2
 import numpy as np
 import tensorflow as tf 
 import network
 import guided_filter
 from tqdm import tqdm
+from PIL import Image
 
 
 
@@ -15,9 +15,10 @@ def resize_crop(image):
             h, w = int(720*h/w), 720
         else:
             h, w = 720, int(720*w/h)
-    image = cv2.resize(image, (w, h),
-                       interpolation=cv2.INTER_AREA)
+    image = image.resize((w, h), Image.ANTIALIAS)
+    
     h, w = (h//8)*8, (w//8)*8
+    image= np.array(image)
     image = image[:h, :w, :]
     return image
     
@@ -39,8 +40,9 @@ def cartoon( model_path,image_obj):
     saver.restore(sess, tf.train.latest_checkpoint(model_path))
     
     try:
-        image = cv2.cvtColor(np.array(image_obj), cv2.COLOR_RGB2BGR)
-        image = resize_crop(image)
+       
+        
+        image = resize_crop(image_obj)
         batch_image = image.astype(np.float32)/127.5 - 1
         batch_image = np.expand_dims(batch_image, axis=0)
         output = sess.run(final_out, feed_dict={input_photo: batch_image})
@@ -48,7 +50,7 @@ def cartoon( model_path,image_obj):
         output = np.clip(output, 0, 255).astype(np.uint8)
 
         return output
-        #cv2.imwrite(save_path, output)
+        
     except:
         print('cartoonize failed')
 
