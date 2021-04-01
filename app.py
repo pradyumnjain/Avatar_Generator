@@ -16,7 +16,6 @@ from seg import DeepLabModel
 from seg import run_visualization
 import SessionState
 
-
 # download function
 def get_image_download_link_cartoon(img):
 	"""Generates a link allowing the PIL image to be downloaded
@@ -104,6 +103,8 @@ def bg_removal(image, model):
     return bg_image
 
 def cartoonify(image , model_path):
+    
+
     st.markdown("<h1 style='text-align: center; color: white;'>Image Cartooning</h1>", unsafe_allow_html=True)
     with st.spinner('Cartooning Image ...'):
         final_img= cartoon(model_path,image)
@@ -122,7 +123,7 @@ if uploaded_file is not None:
     st.write("")
     
     ss = SessionState.get(i=image)
-    st.markdown("click bg_removal multiple time until satisfied with the output")
+    st.title("Click bg_removal multiple times until satisfied with the output")
     if(st.button("Bg_removal", key="1")):
         st.markdown("<h1 style='text-align: center; color: white;'>Background Removal</h1>", unsafe_allow_html=True)
         modelType = "xception_model"
@@ -130,13 +131,14 @@ if uploaded_file is not None:
         ss.i=bg_removal(ss.i, MODEL)
 
 
-    st.markdown("click cartoonify to get cartoonized output")
+    st.title("Click cartoonify to get cartoonized output")
     if(st.button("cartoonify",key="2")):
         model_path = 'test_code/saved_models'
         cartoonify(ss.i , model_path)
 
 
-
+    st.title(" Refresh page to start with new image")
+    
 
  
     
