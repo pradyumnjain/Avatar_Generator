@@ -71,6 +71,16 @@ st.markdown("""
     font-size:50px !important;
     color:#ffffff;
 }
+.stButton>button {
+    border-radius: 5px;
+    padding: 0 50px;
+    background-color:#ffbe3e;
+    font-size: 25px;
+    text-align: center;
+    color:#ffffff;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -87,8 +97,8 @@ st.markdown('<p class="big-title">Pixel</p>', unsafe_allow_html=True)
 st.markdown('<p class="big-font">One click to transform yourself in a cartoon.</p>', unsafe_allow_html=True)
 
 ###side bar
-st.title('Upload')
-st.header("Upload a photo to transform :-) ")
+st.title('Upload a photo to transform :-)')
+st.header("Refresh page to upload a new photo")
 
 ### Excluding Imports ###
 #st.title("Upload a photo to transform :-) ")
@@ -98,12 +108,14 @@ def bg_removal(image, model):
         bg_image = run_visualization(image, MODEL)
     st.success('Done!')
     st.image(bg_image, caption='background removed image.', use_column_width=True)
-    # download image
+        # download image
     st.markdown(get_image_download_link_bg(bg_image), unsafe_allow_html=True)
     return bg_image
 
 def cartoonify(image , model_path):
-    
+    st.image(image, caption='input image.', use_column_width=True)
+        # download image
+    st.markdown(get_image_download_link_bg(image), unsafe_allow_html=True)
 
     st.markdown("<h1 style='text-align: center; color: white;'>Image Cartooning</h1>", unsafe_allow_html=True)
     with st.spinner('Cartooning Image ...'):
@@ -123,21 +135,23 @@ if uploaded_file is not None:
     st.write("")
     
     ss = SessionState.get(i=image)
-    st.title("Click bg_removal multiple times until satisfied with the output")
-    if(st.button("Bg_removal", key="1")):
+    st.title("Click background removal multiple times until satisfied with the output")
+    if(st.button("Background removal", key="1")):
         st.markdown("<h1 style='text-align: center; color: white;'>Background Removal</h1>", unsafe_allow_html=True)
         modelType = "xception_model"
         MODEL = DeepLabModel(modelType)
         ss.i=bg_removal(ss.i, MODEL)
 
+        
+
 
     st.title("Click cartoonify to get cartoonized output")
-    if(st.button("cartoonify",key="2")):
+    if(st.button("Cartoonify",key="2")):
         model_path = 'test_code/saved_models'
         cartoonify(ss.i , model_path)
 
 
-    st.title(" Refresh page to start with new image")
+    st.markdown(" Refresh page to start with new image")
     
 
  
